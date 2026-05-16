@@ -3,8 +3,32 @@
     const canvas = document.getElementById("canvasJuego");
     const ctx = canvas.getContext("2d");
 
+    const TAMANIO_CELDA = 25;
 
-    
+    dibujarTablero = function(){
+      ctx.strokeStyle = "#FCFCFC";
+      ctx.beginPath();//Empieza a dibujar en el canva
+      ctx.moveTo(0,0);//Posicion inicial desde Donde vamos a dibujar
+      ctx.lineTo(100,100);//Hasta donde dibuja
+      ctx.stroke();//Pinta contorno
+    }
+
+    dibujarTablero2 = function(){
+      for(let i=0; i<canvas.width; i+=TAMANIO_CELDA){
+        ctx.strokeStyle = "#FCFCFC";
+        ctx.beginPath();//Empieza a dibujar en el canva
+        ctx.moveTo(i,0);//Posicion inicial desde Donde vamos a dibujar
+        ctx.lineTo(i,canvas.height);//Hasta donde dibuja
+        ctx.stroke();//Pinta contorno
+      }
+      for(let i=0; i<canvas.height; i+=TAMANIO_CELDA){
+        ctx.strokeStyle = "#FCFCFC";
+        ctx.beginPath();//Empieza a dibujar en el canva
+        ctx.moveTo(0,i);//Posicion inicial desde Donde vamos a dibujar
+        ctx.lineTo(canvas.width, i);//Hasta donde dibuja
+        ctx.stroke();//Pinta contorno
+      }
+    }
 
     // Primera pintura del juego al cargar la página
     dibujarTodo();
@@ -19,6 +43,7 @@
 
     function dibujarTodo() {
       limpiarCanvas();
+      dibujarTablero2();
     }
 
 
