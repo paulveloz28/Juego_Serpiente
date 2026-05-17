@@ -5,6 +5,13 @@
 
     const TAMANIO_CELDA = 25;
 
+    const serpiente = [
+      {x:14,y:13},
+      {x:14,y:14},
+      {x:14,y:15},
+      {x:14,y:16}
+    ]
+
     dibujarTablero = function(){
       ctx.strokeStyle = "#FCFCFC";
       ctx.beginPath();//Empieza a dibujar en el canva
@@ -46,7 +53,13 @@
     function dibujarTodo() {
       limpiarCanvas();
       dibujarTablero2();
-      pintarCoordenada(10,2);
+      //pintarCoordenada(10,2);
+      dibujarSerpiente()
+      //pintarCoordenada(5,5);
+      //pintarCoordenada(15,25);
+      //pintarCoordenada(25,15);
+      //pintarCoordenada(0,21);
+      //pintarCoordenada(25,25);
     }
 
     function dibujarNumerosEnY(){
@@ -70,14 +83,27 @@
     }
 
     //Parte 1
-    function pintarCoordenada(x,y){
+    function pintarCoordenada(x,y,color){
       let posicionX = x * TAMANIO_CELDA
       let posicionY = y * TAMANIO_CELDA
       if(posicionX < canvas.width && posicionY < canvas.height){
-      ctx.fillStyle = "yellow"
+      ctx.fillStyle = color
       //ctx.strokeStyle = "yellow"
       ctx.fillRect(posicionX, posicionY, TAMANIO_CELDA, TAMANIO_CELDA);
       ctx.strokeStyle = "red"
       ctx.strokeRect(posicionX, posicionY, TAMANIO_CELDA, TAMANIO_CELDA);
+      }
+    }
+
+    function dibujarSerpiente(){
+      let colorCabeza = "red"
+      for(let i = 0; i < serpiente.length; i++){
+        let serp = serpiente[i];
+        if(i == 0){
+         pintarCoordenada(serp.x, serp.y, colorCabeza) 
+        }else{
+         pintarCoordenada(serp.x, serp.y, "yellow")
+        }
+        
       }
     }
