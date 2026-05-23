@@ -16,13 +16,16 @@
     let direccionActual="derecha";
 
     let comida = {x:5, y:5};
-
     let puntaje = 0;
-
     let juegoTerminado = false;
-
     let velocidadSerpiente = 300;
     let velocidad = 700;
+    
+    let tiempo = 0;
+    let temporizador;
+    let pausado = false;
+    
+    
 
     dibujarTablero = function(){
       ctx.strokeStyle = "#FCFCFC";
@@ -178,13 +181,38 @@
     }
 
     function iniciarJuego(){
+       iniciarTemporizador();
       intervaloSerpiente=setInterval(moverSerpiente, velocidad - velocidadSerpiente)
       cambiarEstado("Jugando")
+     
     }
 
     function pausarJuego(){
-      clearInterval(intervaloSerpiente)
-      cambiarEstado("Descanzando")
+      pausado = !pausado;
+      //clearInterval(intervaloSerpiente)
+      //cambiarEstado("Descanzando")
+
+      if(pausado){
+
+        clearInterval(intervaloSerpiente);
+        clearInterval(temporizador);
+
+        cambiarEstado("Pausado");
+
+      }else{
+
+        clearInterval(intervaloSerpiente);
+
+        intervaloSerpiente = setInterval(
+            moverSerpiente,
+            velocidad - velocidadSerpiente
+        );
+
+        iniciarTemporizador();
+
+        cambiarEstado("Jugando");
+
+      }
     }
 
     function moverSerpiente(){
@@ -281,6 +309,19 @@
       velocidadSerpiente = 300;
       document.getElementById("puntaje").innerText = 0
       puntaje = 0;
-      clearInterval(intervaloSerpiente)
-      
+
+      clearInterval(temporizador);
+      tiempo=0;
+      document.getElementById("tiempo").innerText="0 s";
+
+      clearInterval(intervaloSerpiente) 
     }
+    
+    function iniciarTemporizador(){
+    clearInterval(temporizador);
+    temporizador = setInterval(function(){
+        tiempo++;
+        document.getElementById("tiempo").innerText =
+        tiempo + " s";
+    },1000);
+}
