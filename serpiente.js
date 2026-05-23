@@ -29,6 +29,8 @@
     document.getElementById("record").innerText = record;
     localStorage.removeItem("record");
 
+    let obstaculo = [];
+
     dibujarTablero = function(){
       ctx.strokeStyle = "#FCFCFC";
       ctx.beginPath();//Empieza a dibujar en el canva
@@ -54,6 +56,7 @@
       }
       dibujarNumerosEnY();
       dibujarNumerosEnX();
+      //dibujarObstaculo();
     }
 
     // Primera pintura del juego al cargar la página
@@ -73,6 +76,7 @@
       //pintarCoordenada(10,2);
       dibujarComida();
       dibujarSerpiente();
+      dibujarObstaculo();
       //pintarCoordenada(5,5);
       //pintarCoordenada(15,25);
       //pintarCoordenada(25,15);
@@ -183,7 +187,8 @@
     }
 
     function iniciarJuego(){
-       iniciarTemporizador();
+      iniciarTemporizador();
+      generarNuevaPosicionObstaculo();
       intervaloSerpiente=setInterval(moverSerpiente, velocidad - velocidadSerpiente)
       cambiarEstado("Jugando")
      
@@ -248,8 +253,22 @@
         aumentarPuntaje()
         generarNuevaPosicionComida()
       }
+
+      for(let obstaculo of obstaculos){
+
+        if(
+          serpiente[0].x==obstaculo.x && serpiente[0].y==obstaculo.y){
+
+          clearInterval(intervaloSerpiente);
+          clearInterval(temporizador);
+          juegoTerminado=true;
+          cambiarEstado("Perdiste");
+
+          document.getElementById("mensaje").innerText="💥 Chocaste con un obstáculo";
+            return;
+        }
+      }
       dibujarTodo()
-      console.log(comidaAtrapada())
     }
     
     function cambiarDireccion(direccion){
@@ -339,6 +358,9 @@
       tiempo=0;
       document.getElementById("tiempo").innerText="0 s";
 
+      generarNuevaPosicionObstaculo();
+      dibujarObstaculo();
+
       clearInterval(intervaloSerpiente) 
     }
     
@@ -349,4 +371,37 @@
         document.getElementById("tiempo").innerText =
         tiempo + " s";
     },1000);
+}
+
+function dibujarObstaculo(){
+    obstaculos.forEach(function(obstaculo){
+        ctx.fillStyle="blue";
+        ctx.fillRect(
+            obstaculo.x*TAMANIO_CELDA,
+            obstaculo.y*TAMANIO_CELDA,
+            TAMANIO_CELDA,
+            TAMANIO_CELDA
+        );
+        ctx.strokeStyle="black";
+        ctx.strokeRect(
+
+            obstaculo.x*TAMANIO_CELDA,
+            obstaculo.y*TAMANIO_CELDA,
+            TAMANIO_CELDA,
+            TAMANIO_CELDA
+        );
+    });
+
+}
+
+function generarNuevaPosicionObstaculo(){
+    obstaculos=[];
+    for(let i=0;i<5;i++){
+        let nuevoObstaculo;
+        do{
+          nuevoObstaculo={x:Math.floor(Math.random()*20),y:Math.floor(Math.random()*20)
+          };
+        }while((nuevoObstaculo.x==comida.x && nuevoObstaculo.y==comida.y));
+        obstaculos.push(nuevoObstaculo);
+    }
 }
