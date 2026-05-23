@@ -24,8 +24,10 @@
     let tiempo = 0;
     let temporizador;
     let pausado = false;
-    
-    
+
+    let record = localStorage.getItem("record") || 0;
+    document.getElementById("record").innerText = record;
+    localStorage.removeItem("record");
 
     dibujarTablero = function(){
       ctx.strokeStyle = "#FCFCFC";
@@ -279,6 +281,29 @@
         intervaloSerpiente = setInterval(moverSerpiente, velocidad -  velocidadSerpiente);
       }
       document.getElementById("puntaje").innerText = puntaje
+
+      if(puntaje > record){
+        record = puntaje;
+
+        localStorage.setItem("record",record);
+
+        document.getElementById("record").innerText = record;
+        let mensaje=document.getElementById("mensaje");
+
+        mensaje.innerText="🎉 ¡Nuevo récord!";
+
+        clearTimeout(window.temporizadorMensaje);
+
+        window.temporizadorMensaje=setTimeout(function(){
+
+          if(!juegoTerminado){
+
+            mensaje.innerText="Sigue jugando y supera tu marca";
+
+          }
+
+        },2000);
+      }
     }
 
     function cambiarEstado(estado){
