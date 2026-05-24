@@ -272,9 +272,43 @@
     }
     
     function cambiarDireccion(direccion){
-      direccionActual = direccion
-      
+      //direccionActual = direccion
+
+    // derecha → izquierda bloqueado
+    if(
+        direccionActual=="derecha" &&
+        direccion=="izquierda"
+    ){
+        return;
     }
+
+    // izquierda → derecha bloqueado
+    if(
+        direccionActual=="izquierda" &&
+        direccion=="derecha"
+    ){
+        return;
+    }
+
+    // arriba → abajo bloqueado
+    if(
+        direccionActual=="arriba" &&
+        direccion=="abajo"
+    ){
+        return;
+    }
+
+    // abajo → arriba bloqueado
+    if(
+        direccionActual=="abajo" &&
+        direccion=="arriba"
+    ){
+        return;
+    }
+
+    direccionActual=direccion;
+}
+      
 
     function dibujarComida(){
       pintarCoordenada(comida.x, comida.y, "green");
